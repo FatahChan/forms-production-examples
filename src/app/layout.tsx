@@ -1,6 +1,12 @@
+import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Nunito } from "next/font/google";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+});
 
 export const metadata = {
   title: "Create T3 App",
@@ -14,7 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html
+      lang="en"
+      className={cn(
+        "min-h-screen bg-background font-sans antialiased",
+        nunito.className,
+      )}
+    >
       <body>{children}</body>
     </html>
   );
