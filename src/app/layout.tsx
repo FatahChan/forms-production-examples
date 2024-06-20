@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/cn";
 import "@/styles/globals.css";
 
 import { Nunito } from "next/font/google";
