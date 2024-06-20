@@ -37,11 +37,6 @@ function ShippingForm() {
           formControl={form.control}
           containerClassName="[grid-area:firstName]"
         />
-        {FormInputField<ShippingFormType, "firstName">({
-          formControl: form.control,
-          fieldName: "firstName",
-          containerClassName: "[grid-area:firstName]",
-        })}
         <FormInputField
           formControl={form.control}
           fieldName="lastName"
