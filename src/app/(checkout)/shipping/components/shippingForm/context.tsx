@@ -35,5 +35,8 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
 }
 
 export function useShipping() {
+  if (!ShippingContext) {
+    throw new Error("useShipping must be used within ShippingProvider");
+  }
   return useContext(ShippingContext);
 }
