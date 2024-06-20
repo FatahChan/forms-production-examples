@@ -1,5 +1,5 @@
 import { ShippingProvider } from "./components/ShippingForm/context";
-import ShippingForm from "./components/ShippingForm/shippingForm";
+import ShippingForm from "./components/ShippingForm/ShippingFormForm";
 import SubmitButton from "./components/ShippingForm/ShippingFormSubmitButton";
 
 function Shipping() {

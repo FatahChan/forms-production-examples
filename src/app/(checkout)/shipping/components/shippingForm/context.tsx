@@ -21,18 +21,7 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
     resolver: zodResolver(shippingForm),
     mode: "onBlur",
     defaultValues: {
-      country: "US",
       firstName: "",
-      lastName: "",
-      address1: "",
-      address2: "",
-      zip: "",
-      city: "",
-      state: "",
-      email: "",
-      phone: "",
-      emailMarketing: false,
-      textMarketing: false,
     },
   });
   const submitHandler = form.handleSubmit(async (values) => {
