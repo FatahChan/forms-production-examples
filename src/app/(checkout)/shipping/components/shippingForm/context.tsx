@@ -1,3 +1,4 @@
+"use client";
 import { type ReactNode, createContext, useContext } from "react";
 import { useForm, type UseFormReturn } from "react-hook-form";
 import { shippingForm, type ShippingFormType } from "./schema";
@@ -18,6 +19,9 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
   const form = useForm<ShippingFormType>({
     resolver: zodResolver(shippingForm),
     mode: "onBlur",
+    defaultValues: {
+      country: "US",
+    },
   });
   const onSubmit = form.handleSubmit((values) => {
     console.log(values);

@@ -13,9 +13,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { camelCaseToTitleCase } from "@/lib/utils/camelCaseToTitleCase";
 import { cn } from "@/lib/utils/cn";
-import { type ChangeEvent } from "react";
+import React, { type PropsWithChildren, type ChangeEvent } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useShipping } from "./context";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const gridTemplateArea = cn(
   "grid gap-4",
@@ -31,66 +38,72 @@ function ShippingForm() {
         onSubmit={onSubmit}
         className={cn(gridTemplateArea, "container max-w-xl py-8")}
       >
-        <FormInputField
+        <FormSelectField
           fieldName="country"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:country]"
-        />
+          defaultValue="US"
+          disabled
+        >
+          <SelectItem value="US">United States</SelectItem>
+        </FormSelectField>
         <FormInputField
           fieldName="firstName"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:firstName]"
         />
         <FormInputField
           fieldName="lastName"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:lastName]"
         />
         <FormInputField
           fieldName="address1"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:address1]"
         />
         <FormInputField
           fieldName="address2"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:address2]"
         />
         <FormInputField
           fieldName="city"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:city]"
         />
-        <FormInputField
+        <FormSelectField
           fieldName="state"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:state]"
-        />
+        >
+          <SelectItem value="CA">California</SelectItem>
+        </FormSelectField>
         <FormInputField
           fieldName="zip"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:zip]"
           inputMode="numeric"
         />
         <FormInputField
           fieldName="email"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:email]"
         />
         <FormInputField
           fieldName="phone"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:phone]"
           type="tel"
         />
         <FormCheckboxField
           fieldName="emailMarketing"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:emailMarketing]"
         />
         <FormCheckboxField
           fieldName="textMarketing"
-          control={form.control}
+          formControl={form.control}
           containerClassName="[grid-area:textMarketing]"
         />
         <Button type="submit" className="[grid-area:submit]">
@@ -106,7 +119,7 @@ type FormInputFieldProps<
   TFields extends Path<TForm>,
 > = React.ComponentPropsWithoutRef<typeof Input> & {
   fieldName: TFields;
-  control: Control<TForm, unknown>;
+  formControl: Control<TForm, unknown>;
   containerClassName?: string;
 };
 
@@ -115,19 +128,22 @@ function FormInputField<
   TFields extends Path<TForm>,
 >({
   fieldName,
-  control,
+  formControl,
   containerClassName,
   ...inputProps
 }: FormInputFieldProps<TForm, TFields>) {
   return (
     <FormField
-      control={control}
+      control={formControl}
       name={fieldName}
       render={({ field: { name, onChange, ...restField } }) => (
         <FormItem className={cn("relative", containerClassName)}>
-          <FormLabel className="capitalize">
-            {camelCaseToTitleCase(name)}
-          </FormLabel>
+          <div className="flex items-end gap-2">
+            <FormLabel className="capitalize">
+              {camelCaseToTitleCase(name)}
+            </FormLabel>
+            <FormMessage className="text-xs leading-none" />
+          </div>
           <FormControl>
             <Input
               {...restField}
@@ -138,7 +154,6 @@ function FormInputField<
               )}
             />
           </FormControl>
-          <FormMessage className="text-xs" />
         </FormItem>
       )}
     />
@@ -150,7 +165,7 @@ type FormCheckboxFieldProps<
   TFields extends Path<TForm>,
 > = React.ComponentPropsWithoutRef<typeof Checkbox> & {
   fieldName: TFields;
-  control: Control<TForm, unknown>;
+  formControl: Control<TForm, unknown>;
   containerClassName?: string;
 };
 
@@ -159,13 +174,13 @@ function FormCheckboxField<
   TFields extends Path<TForm>,
 >({
   fieldName,
-  control,
+  formControl,
   containerClassName,
   ...checkboxProp
 }: FormCheckboxFieldProps<TForm, TFields>) {
   return (
     <FormField
-      control={control}
+      control={formControl}
       name={fieldName}
       render={({ field }) => (
         <FormItem
@@ -188,6 +203,55 @@ function FormCheckboxField<
             {camelCaseToTitleCase(field.name)}
           </FormLabel>
           <FormMessage className="text-xs" />
+        </FormItem>
+      )}
+    />
+  );
+}
+
+type FormSelectFieldProps<
+  TForm extends FieldValues,
+  TFields extends Path<TForm>,
+> = React.ComponentPropsWithoutRef<typeof Select> & {
+  fieldName: TFields;
+  formControl: Control<TForm, unknown>;
+  containerClassName?: string;
+};
+
+function FormSelectField<
+  TForm extends FieldValues,
+  TFields extends Path<TForm>,
+>({
+  fieldName,
+  formControl,
+  containerClassName,
+  children,
+  ...selectProps
+}: PropsWithChildren<FormSelectFieldProps<TForm, TFields>>) {
+  return (
+    <FormField
+      control={formControl}
+      name={fieldName}
+      render={({ field }) => (
+        <FormItem className={cn("relative", containerClassName)}>
+          <div className="flex items-end gap-2">
+            <FormLabel className="capitalize">
+              {camelCaseToTitleCase(field.name)}
+            </FormLabel>
+            <FormMessage className="text-xs leading-none" />
+          </div>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            {...selectProps}
+          >
+            <FormControl>
+              <SelectTrigger onBlur={field.onBlur}>
+                <SelectValue />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>{children}</SelectContent>
+          </Select>
         </FormItem>
       )}
     />

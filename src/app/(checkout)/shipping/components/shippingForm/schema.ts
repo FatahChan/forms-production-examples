@@ -17,7 +17,7 @@ const shippingForm = z.object({
     // TODO: Add US state validation
     return true;
   }),
-  zip: z.coerce.number().refine((_value) => {
+  zip: z.coerce.number({ message: "Required" }).refine((_value) => {
     console.log(_value);
     return true;
   }),
