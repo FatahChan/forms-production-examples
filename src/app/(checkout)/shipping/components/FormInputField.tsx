@@ -20,7 +20,7 @@ type FormInputFieldProps<
   formControl: Control<TForm, unknown>;
   containerClassName?: string;
 };
-export function FormInputField<
+function FormInputField<
   TForm extends FieldValues,
   TFields extends Path<TForm>,
 >({
@@ -57,7 +57,7 @@ export function FormInputField<
   );
 }
 
-export function getOnChangeInputHandlerWithWrapper(
+function getOnChangeInputHandlerWithWrapper(
   onChange: (e: ChangeEvent<HTMLInputElement>) => unknown,
   inputProps: React.ComponentPropsWithoutRef<typeof Input>,
 ) {
@@ -95,3 +95,5 @@ export function getOnChangeInputHandlerWithWrapper(
 
   return onChange;
 }
+
+export default FormInputField;

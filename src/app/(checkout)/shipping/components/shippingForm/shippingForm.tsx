@@ -1,27 +1,26 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { cn } from "@/lib/utils/cn";
 import { SelectItem } from "@/components/ui/select";
 import { useShipping } from "./context";
-import { FormInputField } from "./FormInputField";
-import { FormCheckboxField } from "./FormCheckboxField";
-import { FormSelectField } from "./FormSelectField";
-
+import FormInputField from "../FormInputField";
+import FormCheckboxField from "../FormCheckboxField";
+import FormSelectField from "../FormSelectField";
+import type { ShippingFormType } from "./schema";
 const gridTemplateArea = cn(
   "grid gap-4",
   "grid-cols-1",
-  "sm:grid-cols-2 sm:[grid-template-areas:'country_country''firstName_lastName''address1_address1''address2_address2''city_city''state_zip''email_email''phone_phone''emailMarketing_emailMarketing''textMarketing_textMarketing''submit_submit']",
+  "sm:grid-cols-2 sm:[grid-template-areas:'country_country''firstName_lastName''address1_address1''address2_address2''city_city''state_zip''email_email''phone_phone''emailMarketing_emailMarketing''textMarketing_textMarketing']",
 );
 
 function ShippingForm() {
-  const { onSubmit, ...form } = useShipping();
+  const { submitHandler, ...form } = useShipping();
   return (
     <Form {...form}>
       <form
-        onSubmit={onSubmit}
+        onSubmit={submitHandler}
         className={cn(gridTemplateArea, "container max-w-xl py-8")}
       >
         <FormSelectField
@@ -38,9 +37,14 @@ function ShippingForm() {
           formControl={form.control}
           containerClassName="[grid-area:firstName]"
         />
+        {FormInputField<ShippingFormType, "firstName">({
+          formControl: form.control,
+          fieldName: "firstName",
+          containerClassName: "[grid-area:firstName]",
+        })}
         <FormInputField
-          fieldName="lastName"
           formControl={form.control}
+          fieldName="lastName"
           containerClassName="[grid-area:lastName]"
         />
         <FormInputField
@@ -92,9 +96,6 @@ function ShippingForm() {
           formControl={form.control}
           containerClassName="[grid-area:textMarketing]"
         />
-        <Button type="submit" className="[grid-area:submit]">
-          Submit
-        </Button>
       </form>
     </Form>
   );

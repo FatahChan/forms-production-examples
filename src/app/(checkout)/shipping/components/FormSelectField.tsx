@@ -25,7 +25,7 @@ type FormSelectFieldProps<
   formControl: Control<TForm, unknown>;
   containerClassName?: string;
 };
-export function FormSelectField<
+function FormSelectField<
   TForm extends FieldValues,
   TFields extends Path<TForm>,
 >({
@@ -64,3 +64,5 @@ export function FormSelectField<
     />
   );
 }
+
+export default FormSelectField;

@@ -20,7 +20,7 @@ type FormCheckboxFieldProps<
   formControl: Control<TForm, unknown>;
   containerClassName?: string;
 };
-export function FormCheckboxField<
+function FormCheckboxField<
   TForm extends FieldValues,
   TFields extends Path<TForm>,
 >({
@@ -43,7 +43,7 @@ export function FormCheckboxField<
           <FormControl>
             <Checkbox
               checked={field.value}
-              onCheckedChange={(checked) => {
+              onCheckedChange={(checked: boolean) => {
                 field.onChange({ target: { value: checked } });
                 return checked;
               }}
@@ -59,3 +59,5 @@ export function FormCheckboxField<
     />
   );
 }
+
+export default FormCheckboxField;
